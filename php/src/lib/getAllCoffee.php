@@ -1,10 +1,12 @@
 <?php
-	require_once("db_connect.php");
 	require_once("./classes/coffeeFactory.php");
 	$coffees = array();
 	// Create connection
-	$conn = new mysqli($host, $user, $pass, $mydatabase);
+	require_once ('./classes/database.php');
+    $database = new Database();
+    $conn = $database->getConnection();
 	// Check connection
+	$conn->begin_transaction();
 
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
@@ -54,7 +56,7 @@
 	} else {
 		echo "0 results";
 	}
-	
+	$conn->commit();
 	$conn->close();
 
 ?>

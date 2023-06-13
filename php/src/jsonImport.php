@@ -1,6 +1,8 @@
 <?php
 require_once("./lib/getMappingCoffee.php");
-$conn = new mysqli($host, $user, $pass, $mydatabase);
+include_once './classes/database.php';
+    $database = new Database();
+    $conn = $database->getConnection();
 // Check connection
 
 if ($conn->connect_error) {
@@ -17,7 +19,7 @@ if(!file_exists($path)){
 	$jsonString = file_get_contents($path);
 	//convert to associative array:
 	$coffeeData = json_decode($jsonString, true);
-
+	$conn->begin_transaction();
 	foreach ($coffeeData as $coffee) {
 		$stmt = $conn->prepare("INSERT INTO kawy (Species, Owner, Country_of_Origin, Region, Producer, Haravest_Year, Grading_Date, Processing_Method, Aroma, Flavor, Aftertaste, Acidity, Body, Balance, Uniformity, Clean_Cup, Sweetnes, Cupper_Points, Total_Cup_Points, Moisture, Color, Certification, Altitude_Meters)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -51,6 +53,7 @@ if(!file_exists($path)){
 	    $stmt->execute();
 	    $stmt->close();
 	}
+	$conn->commit();
 	echo "Data from JSON has been inserted into db correctly.<br>";
 }
 echo '<a href="index.php">

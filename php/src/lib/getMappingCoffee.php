@@ -1,10 +1,11 @@
 <?php
-	require_once('db_connect.php');
 	require_once("getMappingFunction.php");
 	// Create connection
-	$conn = new mysqli($host, $user, $pass, $mydatabase);
+	include_once './classes/database.php';
+    $database = new Database();
+    $conn = $database->getConnection();
 	// Check connection
-
+	$conn->begin_transaction();
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
@@ -23,6 +24,6 @@
 	//get all owners
 	$sql = "SELECT * FROM wlasciciele";
 	$ownersMapping = getMapping($conn, $sql, "Wlasciciel", "ID");
-	
+	$conn->commit();
 	$conn->close();
 ?>

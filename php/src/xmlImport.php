@@ -1,7 +1,8 @@
 <?php 
 require_once("./lib/getMappingCoffee.php");
-
-$conn = new mysqli($host, $user, $pass, $mydatabase);
+include_once './classes/database.php';
+    $database = new Database();
+    $conn = $database->getConnection();
 // Check connection
 
 if ($conn->connect_error) {
@@ -11,6 +12,7 @@ $dir = "xmlFiles";
 $filename = "coffees.xml";
 $path = "./{$dir}/{$filename}";
 
+$conn->begin_transaction();
 if(!file_exists($path)){
 	echo "There is no file named {$filename} in directory {$dir}<br>";
 }else{
@@ -49,6 +51,7 @@ if(!file_exists($path)){
 	    $stmt->execute();
 	    $stmt->close();
 	}
+	$conn->commit();
 	echo "Data from XML has been inserted into db correctly.<br>";
 }
 echo '<a href="index.php">
