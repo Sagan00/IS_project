@@ -1,4 +1,3 @@
-Skład grupy projektowej: Wojciech Saganowski, Weronika Sieniawska
 Temat: Zestawienie danych na temat wysokości stóp procentowych i cen mieszkań w okresie
 w latach 2000-2012 z uwzględnieniem regionów i typów mieszkań.
 
@@ -16,7 +15,7 @@ Uruchomienie programu Docker Desktop, a następnie otworzenie projektu w program
 W terminalu zastosować polecenie: docker-compose up --build
 
 Baza danych w localhost:8080.
-Dane do zalowania w bazie:
+Dane do zalogowania w bazie:
 Login: root
 Hasło: MYSQL_ROOT_PASSWORD
 Należy zaimportować plik users.sql oraz folder mieszkania.sql.gz (test zawiera to samo co folder mieszkania.sql.gz, ale z powodu limitu należało skompresować plik).
