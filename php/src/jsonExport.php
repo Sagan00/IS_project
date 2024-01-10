@@ -1,14 +1,13 @@
 <?php
-require_once("./lib/getAllCoffee.php");
-require_once("./lib/exportCoffeeToJSON.php");
+require_once("./lib/getAllFlats.php");
 
-$dir = "jsonFiles";
-$filename = "coffees.json";
+$dir = "files";
+$filename = "flats.json";
 $filepath = "./{$dir}/{$filename}";
 
-saveCoffeesAsJSON($coffees, 15, $filepath);
-echo "Coffee data exported to JSON file succesfully to working directory into folder named `{$dir}` file has name `{$filename}`<br>"; 
+saveFlatsAsJSON($flats, 5, $filepath);
+echo "Dane mieszkań zostały pomyślnie wyeksportowane do pliku JSON w katalogu roboczym o nazwie {$dir}. Plik ma nazwę `{$filename}`<br>"; 
 echo '<a href="index.php">
-      			<input type="submit" value="Back to main page"/>
+      			<input type="submit" value="Powrót do strony głównej"/>
   			</a><br>';
 ?>

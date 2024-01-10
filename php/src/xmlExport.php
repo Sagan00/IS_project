@@ -1,13 +1,13 @@
 <?php
-require_once("./lib/getAllCoffee.php");
-require_once("./lib/exportCoffeeToXML.php");
+require_once("./lib/getAllFlats.php");
 		
-$dir = "xmlFiles";
-$filename = "coffees.xml";
+$dir = "files";
+$filename = "flats.xml";
 $filepath = "./{$dir}/{$filename}";
-saveCoffeesAsXml($coffees, 15, $filepath);
-echo "Coffee data exported to XML file succesfully to working directory into folder named `{$dir}` file has name `{$filename}`<br>"; 
+
+saveFlatsAsXml($flats, 5, $filepath);
+echo "Dane mieszkań zostały pomyślnie wyeksportowane do pliku XML w katalogu roboczym o nazwie {$dir}. Plik ma nazwę `{$filename}`<br>"; 
 echo '<a href="index.php">
-      			<input type="submit" value="Back to main page"/>
+      			<input type="submit" value="Powrót do strony głównej"/>
   			</a><br>';
 ?>

@@ -1,35 +1,54 @@
-.login-form {
-    width: 300px;
-    margin: 0 auto;
-  }
-  
-  .login-form .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .login-form .form-group label {
-    display: block;
-    font-weight: bold;
-  }
-  
-  .login-form .form-group input[type="text"],
-  .login-form .form-group input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .login-form .form-group .submit-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #337ab7;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .login-form .form-group .submit-btn:hover {
-    background-color: #286090;
-  }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stronaLogowania {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* Dodatkowe style, jeśli potrzebne */
+}
+
+.login-form{
+  text-align: center;
+}
+
+.login-form .form-group {
+  margin-bottom: 20px;
+}
+
+.login-form .form-group label {
+  display: block;
+  font-weight: bold;
+}
+
+.login-form .form-group input[type="text"],
+.login-form .form-group input[type="password"] {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 7px;
+}
+
+.form-group1 form {
+  display: inline-block;
+}
+
+.form-group1 form:last-child {
+  margin-right: 0; /* Usunięcie marginesu dla ostatniego przycisku */
+}
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form .form-group .submit-btn:hover {
+  background-color: #737373;
+}

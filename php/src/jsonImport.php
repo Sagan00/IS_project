@@ -1,62 +1,58 @@
 <?php
-require_once("./lib/getMappingCoffee.php");
+require_once("./lib/getMappingFlats.php");
 include_once './classes/database.php';
-    $database = new Database();
-    $conn = $database->getConnection();
+$database = new Database();
+$conn = $database->getConnection();
 // Check connection
 
 if ($conn->connect_error) {
-	die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
-$dir = "jsonFiles";
-$filename = "coffees.json";
+$dir = "files";
+$filename = "flats.json";
 $path = "./{$dir}/{$filename}";
 
-if(!file_exists($path)){
-	echo "There is no file named {$filename} in directory {$dir}<br>";
-}else{
-	//get data from file .json
-	$jsonString = file_get_contents($path);
-	//convert to associative array:
-	$coffeeData = json_decode($jsonString, true);
-	$conn->begin_transaction();
-	foreach ($coffeeData as $coffee) {
-		$stmt = $conn->prepare("INSERT INTO kawy (Species, Owner, Country_of_Origin, Region, Producer, Haravest_Year, Grading_Date, Processing_Method, Aroma, Flavor, Aftertaste, Acidity, Body, Balance, Uniformity, Clean_Cup, Sweetnes, Cupper_Points, Total_Cup_Points, Moisture, Color, Certification, Altitude_Meters)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+if (!file_exists($path)) {
+    echo "There is no file named {$filename} in directory {$dir}<br>";
+} else {
+    // Get data from JSON file
+    $jsonString = file_get_contents($path);
+    // Convert to associative array
+    $flatData = json_decode($jsonString, true);
 
-	    $stmt->bind_param("iiissssissssssssssssiss", 
-	        $speciesMapping["{$coffee['species']}"], 
-	        $ownersMapping["{$coffee['owner']}"], 
-	        $countriesMapping["{$coffee['countryOfOrigin']}"], 
-	        $coffee['region'], 
-	        $coffee['producer'], 
-	        $coffee['harvestYear'], 
-	        $coffee['gradingDate'], 
-	        $methodsMapping["{$coffee['processingMethod']}"], 
-	        $coffee['aroma'], 
-	        $coffee['flavor'], 
-	        $coffee['aftertaste'], 
-	        $coffee['acidity'], 
-	        $coffee['body'], 
-	        $coffee['balance'], 
-	        $coffee['uniformity'], 
-	        $coffee['cleanCup'], 
-	        $coffee['sweetness'], 
-	        $coffee['cupperPoints'], 
-	        $coffee['totalCupPoints'], 
-	        $coffee['moisture'], 
-	        $colorsMapping["{$coffee['color']}"], 
-	        $coffee['certification'], 
-	        $coffee['altitudeMeters']
-	    );
+    // Set isolation level to READ UNCOMMITTED
+    $conn->query("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED");
 
-	    $stmt->execute();
-	    $stmt->close();
-	}
-	$conn->commit();
-	echo "Data from JSON has been inserted into db correctly.<br>";
+    // Start transaction
+    $conn->begin_transaction();
+
+    foreach ($flatData as $flat) {
+        $stmt = $conn->prepare("INSERT INTO mieszkania (DataDodania, Region, IloscPokoi, Ulica, Metraz, Model, RokBudowy, Cena, StopaProcentowa)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        $stmt->bind_param("siisiiiid",
+            $flat['dataDodania'],
+            $regionsMapping["{$flat['region']}"],
+            $iloscPokoiMapping["{$flat['iloscPokoi']}"],
+            $flat['ulica'],
+            $flat['metraz'],
+            $modelsMapping["{$flat['model']}"],
+            $flat['rokBudowy'],
+            $flat['cena'],
+            $flat['stopaProcentowa']
+        );
+
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    // Commit the transaction
+    $conn->commit();
+
+    echo "Dane z pliku JSON zostały poprawnie wstawione do bazy danych.<br>";
 }
+
 echo '<a href="index.php">
-			<input type="submit" value="Back to main page"/>
-		</a><br>';
+        <input type="submit" value="Powrót do strony głównej"/>
+    </a><br>';
 ?>

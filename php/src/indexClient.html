@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Moja strona</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="data-container"></div>
+
+    <script>
+        fetch('files/flat.json')
+            .then(response => response.json())
+            .then(data => {
+                const flatData = data[2].data;
+
+                // Utworzenie tablicy unikalnych wartości dla daty dodania
+                var uniqueDates = [...new Set(flatData.map(flat => flat.DataDodania))];
+
+                var cena = [];
+                for (var i = 0; i < uniqueDates.length; i++) {
+                    var sum = 0;
+                    var count = 0;
+                    for (var j = 0; j < flatData.length; j++) {
+                        if (flatData[j].DataDodania === uniqueDates[i]) {
+                            sum += parseFloat(flatData[j].Cena);
+                            count++;
+                        }
+                    }
+                    cena.push(sum / count);
+                }
+
+                var chart1Data = {
+                    labels: uniqueDates,
+                    datasets: [{
+                        label: 'Cena',
+                        data: cena,
+                        backgroundColor: 'rgba(75, 192, 192, 0.8)',
+                    }]
+                };
+
+                var chart1Options = {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                };
+
+                var chart1Canvas = document.createElement('canvas');
+                var chart1Ctx = chart1Canvas.getContext('2d');
+                var chart1 = new Chart(chart1Ctx, {
+                    type: 'bar',
+                    data: chart1Data,
+                    options: chart1Options
+                });
+
+                var dataContainer = document.getElementById('data-container');
+                var chart1Label = document.createElement('p');
+                chart1Label.innerText = 'Cena by Data Dodania';
+                dataContainer.appendChild(chart1Label);
+                dataContainer.appendChild(chart1Canvas);
+            });
+
+        fetch('files/flat.json')
+            .then(response => response.json())
+            .then(data => {
+                const flatData = data[2].data;
+                const regionData = data.find(item => item.name === 'regiony').data;
+
+                var regionNames = regionData.map(region => region.NazwaRegionu);
+
+                var cena = [];
+                for (var i = 0; i < regionNames.length; i++) {
+                    var sum = 0;
+                    var count = 0;
+                    for (var j = 0; j < flatData.length; j++) {
+                        var regionId = flatData[j].Region;
+                        var region = regionData.find(item => item.IdRegion === regionId);
+                        if (region && region.NazwaRegionu === regionNames[i]) {
+                            sum += parseFloat(flatData[j].Cena);
+                            count++;
+                        }
+                    }
+                    cena.push(sum / count);
+                }
+
+                var chartData = {
+                    labels: regionNames,
+                    datasets: [{
+                        label: 'Cena',
+                        data: cena,
+                        backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                    }]
+                };
+
+                var chartOptions = {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                };
+
+                var chartCanvas = document.createElement('canvas');
+                var chartCtx = chartCanvas.getContext('2d');
+                var chart = new Chart(chartCtx, {
+                    type: 'bar',
+                    data: chartData,
+                    options: chartOptions
+                });
+
+                var dataContainer = document.getElementById('data-container');
+                var chartLabel = document.createElement('p');
+                chartLabel.innerText = 'Cena by Region';
+                dataContainer.appendChild(chartLabel);
+                dataContainer.appendChild(chartCanvas);
+            });
+    </script>
+</body>
+</html>

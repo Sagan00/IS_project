@@ -8,28 +8,30 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 $capsule = new Capsule;
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'nazwa_bazy_danych',
-    'username'  => 'uzytkownik',
-    'password'  => 'haslo',
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
+    'host'      => 'db',
+    'database'  => 'MYSQL_DATABASE',
+    'username'  => 'MYSQL_USER',
+    'password'  => 'MYSQL_PASSWORD',
+    'charset'   => 'utf8mb4',
+    'collation' => 'utf8mb4_0900_ai_ci',
     'prefix'    => '',
 ]);
+
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
 // Przykładowa klasa reprezentująca tabelę w bazie danych
-class User extends Illuminate\Database\Eloquent\Model
+class Region extends Illuminate\Database\Eloquent\Model
 {
-    protected $table = 'users';
+    protected $table = 'regiony';
 }
 
 // Przykładowe użycie ORM
-$users = User::all();
+$regiony = Region::all();
 
-foreach ($users as $user) {
-    echo $user->name . ' - ' . $user->email . '<br>';
+echo '<strong>' . "Przykładowe regiony w Singapurze". '</strong>' . '<br>' . '<br>';
+foreach ($regiony as $region) {
+    echo $region->NazwaRegionu . '<br>';
 }
 
 ?>
